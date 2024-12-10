@@ -1,94 +1,58 @@
-#include <stdio.h>
-#include <stdlib.h>
 
-// تعريف عنصر القائمة
-typedef struct element {
-    int val;
-    struct element *suivant;
-} element;
-
-// دالة لإنشاء قائمة فارغة
-element* creerListe() {
-    return NULL;
-}
-
-// دالة لتحميل العناصر من المصفوفة إلى القائمة
-element* chargerListe(int Tab[], int taille, element *liste) {
-    for (int i = 0; i < taille; i++) {
-        element *nouveau = (element *)malloc(sizeof(element));
-        nouveau->val = Tab[i];
-        nouveau->suivant = liste;
-        liste = nouveau;
-    }
-    return liste;
-}
-
-// دالة لطباعة عناصر القائمة
-void afficherListe(element *L) {
-    if (L == NULL) {
-        printf("NULL\n");
-        return;
-    }
-    element *temp = L;
-    while (temp != NULL) {
-        printf("%d -> ", temp->val);
-        temp = temp->suivant;
-    }
-    printf("NULL\n");
-}
-
-// دالة لحذف عنصر من نهاية القائمة
-element* supprimerEnFin(element *L) {
-    if (L == NULL) {
-        return NULL;
-    }
-    if (L->suivant == NULL) {
-        free(L);
-        return NULL;
-    }
-    element *temp = L;
-    while (temp->suivant->suivant != NULL) {
-        temp = temp->suivant;
-    }
-    free(temp->suivant);
-    temp->suivant = NULL;
-    return L;
-}
-
-// دالة لإضافة عنصر في بداية القائمة
-element* ajouterEnDebut(element *L, int val) {
-    element *nouveau = (element *)malloc(sizeof(element));
-    nouveau->val = val;
-    nouveau->suivant = L;
-    return nouveau;
-}
-
-// دالة لتفريغ القائمة
-void viderListe(element *L) {
-    element *temp;
-    while (L != NULL) {
-        temp = L;
-        L = L->suivant;
-        free(temp);
-    }
-    printf("La liste est vide\n");
-}
-
-// البرنامج الرئيسي
-int main() {
-    int Tab[10] = {1, 3, 5, 7, 8, 10, 9, 11, 13, 20};
-    element *liste = creerListe();
-    element *L = chargerListe(Tab, 10, liste);
-    
-    afficherListe(L);
-    
-    element *L1 = supprimerEnFin(L);
-    afficherListe(L1);
-    
-    element *L2 = ajouterEnDebut(L1, 40);
-    afficherListe(L2);
-    
-    viderListe(L2);
-    
-    return 0;
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <string.h> 
+ 
+char *ChargerChaine(int N) { 
+    char *chaine = (char *)malloc(N+1);  
+    printf("Entrez une chaine de %d caracteres: ", N); 
+    scanf("%d",N); 
+    fgets(chaine, N+1, stdin); 
+    chaine[strcspn(chaine, "\n")] = 0;  
+    return chaine; 
+} 
+ 
+int Longueur(char *ch) { 
+    int i = 0; 
+    while (ch[i] != '\0') { 
+        i++; 
+    } 
+    return i; 
+} 
+ 
+void ChargerTab(char *P, char Tab[]) { 
+    strcpy(Tab, P); 
+} 
+ 
+void InverserTab(char Tab[], char T[], int m) { 
+    for (int i = 0; i < m; i++) { 
+        T[i] = Tab[m-i-1]; 
+    } 
+   T[m] = '\0';
+} 
+ 
+void AfficherTab(char Tab[], int m) { 
+    for (int i = 0; i < m; i++) { 
+        printf("%c", Tab[i]); 
+    } 
+    printf("\n"); 
+} 
+ 
+int main() { 
+    int N; 
+    printf("Entrez la taille de la chaine: "); 
+    scanf("%d", &N); 
+ 
+    char *chaine = ChargerChaine(N); 
+    int longueur = Longueur(chaine); 
+ 
+    char Tab[N], T[N]; 
+    ChargerTab(chaine, Tab); 
+ 
+    InverserTab(Tab, T, longueur); 
+    printf("La chaine inversee est: "); 
+    AfficherTab(T, longueur); 
+ 
+    free(chaine);  
+    return 0; 
 }
